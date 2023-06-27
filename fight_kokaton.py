@@ -21,8 +21,6 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
         tate = False
     return yoko, tate
-
-
 class Bird:
     """
     ゲームキャラクター（こうかとん）に関するクラス
@@ -56,7 +54,6 @@ class Bird:
         self.img = self.img = self.imgs[(+5, 0)]  # デフォルト：右向き
         self.rct = self.img.get_rect()
         self.rct.center = xy
-
     def change_img(self, num: int, screen: pg.Surface):
         """
         こうかとん画像を切り替え，画面に転送する
@@ -65,7 +62,6 @@ class Bird:
         """
         self.img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)
         screen.blit(self.img, self.rct)
-
     def update(self, key_lst: list[bool], screen: pg.Surface):
         """
         押下キーに応じてこうかとんを移動させる
@@ -87,7 +83,6 @@ class Bird:
 
 class Beam:
     def __init__(self,bird: Bird):
-        
         self.img = pg.image.load(f"ex03/fig/beam.png") 
         pg.draw.circle
         self.rct = self.img.get_rect()
@@ -97,7 +92,6 @@ class Beam:
     
     def update(self,screen: pg.Surface ):
         #引数に基づきビームsurfaceを生成する
-        
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
         
@@ -131,8 +125,6 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
-    
-
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -149,8 +141,7 @@ def main():
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beam = Beam(bird) #ビームクラスのインスタンスを生成する
-        
-            
+
         screen.blit(bg_img, [0, 0])
         
         for bomb in bombs:
@@ -177,7 +168,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 if __name__ == "__main__":
     pg.init()
