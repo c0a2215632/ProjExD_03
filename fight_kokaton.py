@@ -80,6 +80,7 @@ class Beam:
     def __init__(self,bird: Bird):
         
         self.img = pg.image.load(f"ex03/fig/beam.png") 
+        pg.draw.circle
         self.rct = self.img.get_rect()
         self.rct.left = bird.rct.right
         self.rct.centery = bird.rct.centery
@@ -106,7 +107,7 @@ class Bomb:
         self.img.set_colorkey((0, 0, 0))
         self.rct = self.img.get_rect()
         self.rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
-        self.vx, self.vy = +5, +5
+        self.vx, self.vy = +1, +1
 
     def update(self, screen: pg.Surface):
         """
@@ -142,20 +143,26 @@ def main():
                 
             
         screen.blit(bg_img, [0, 0])
-        
-        if bird.rct.colliderect(bomb.rct):
-            # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
-            bird.change_img(8, screen)
-            pg.display.update()
-            time.sleep(1)
-            return
-        
-        
+        if bomb is not None:
+            if bird.rct.colliderect(bomb.rct):
+                # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
+                bird.change_img(8, screen)
+                pg.display.update()
+                time.sleep(1)
+                return
+        if beam is not None and bomb is not None:
+            if bomb.rct.colliderect(beam.rct):
+                bomb = None
+                beam = None
+                bird.change_img(6,screen)
+                pg.display.update()
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        bomb.update(screen)
+        
         if beam is not None:
             beam.update(screen)
+        if bomb is not None:
+            bomb.update(screen)
         pg.display.update()
         tmr += 1
         clock.tick(50)
